@@ -1,0 +1,4 @@
+e33	34	OFF	OFF	OFF	no	Ma
+ffrrf	2	OFF	OFF	OFF	si	Lu
+deew	22	OFF	OFF	OFF	si	Ma
+feref	22	OFF	ON	OFF	si	Lu

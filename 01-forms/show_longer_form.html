@@ -1,0 +1,42 @@
+<html>
+	<head>
+		<title>My bigger form ...</title>
+		<meta charset="utf-8">
+	</head>
+
+	<body>
+		<form action="http://localhost:8000/cgi-bin/save_data.py" method="get">
+			Nombre &nbsp;&nbsp;&nbsp;
+			<input type="text" name="nombre"/>
+
+			<br>
+			Edad &nbsp;&nbsp;&nbsp;
+			<input type="text" name="edad" size="3"/>
+
+			<br>
+			Lenguajes que usas &nbsp;&nbsp;&nbsp;
+				<input type = "checkbox" name = "leng1" value = "C" /> C
+				<input type = "checkbox" name = "leng2" value = "J" /> Java
+				<input type = "checkbox" name = "leng3" value = "P" /> Python
+
+			<br>
+			Le tienes miedo a los temblores? &nbsp;&nbsp;&nbsp;
+				<input type = "radio" name = "temblores" value = "si" /> Si, que susto!
+				<input type = "radio" name = "temblores" value = "no" /> Naw
+
+			<br>
+			Dia favorito:
+				<select name = "dias">
+					<option value = "Lu">Lunes</option>
+					<option value = "Ma">Martes</option>
+					<option value = "Mi">Miercoles</option>
+					<option value = "Ju">Jueves</option>
+					<option value = "Vi" selected>Viernes</option>
+				</select>
+
+			<br>
+			<input type="submit" value="Enviar!">
+		</form>
+
+	</body>
+</html>

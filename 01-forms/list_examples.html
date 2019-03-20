@@ -1,0 +1,67 @@
+<html>
+	<head>
+		<title>Forms, forms, forms ...</title>
+		<meta charset="utf-8">
+	</head>
+
+	<body>
+		<p>En esta demo, mostraré cómo se envían datos usando páginas web. Para poder hacer esto, necesitamos un servidor web que pueda recibir las peticiones ("requests") de clientes que quieren ver páginas, como también procesar los datos que envían clientes y dar una respuesta ("response") a estos. Hoy usaremos <a href="https://docs.python.org/2/library/cgihttpserver.html">CGIHTTPServer</a>, que pueden correr en forma local si tienen Python instalado, tipeando el siguiente comando en una consola:<br><br>
+
+			<code>
+jsimmond@pita:~/Dropbox/cc4401/2019/demos/01-forms$ python -m CGIHTTPServer
+			</code>
+		</p><br>
+		<p>
+Una vez que hayan bajado esta demo y hayan iniciado el CGIHTTPServer, pueden acceder a esta página ingresando la siguiente URL en su browser:<br><br>
+
+			<code>
+http://localhost:8000/list_examples.html
+			</code>
+
+		</p>
+		<br>
+		<p>
+Finalmente, antes de ejecutar los ejemplos, asegúrense que los archivos tengan los permisos correctos. Los archivos HTML deben tener permiso de lectura para todos (<code>chmod 644 ... </code>), y los scripts .py deben tener permisos de lectura y ejecución para todos (<code>chmod 755 ... </code>).
+		</p>
+		<br>
+		<p>
+			Ejemplos:
+			<ol>
+				<li>El ejemplo más simple: <a href="http://localhost:8000/cgi-bin/generate_static_page.py">ejecutar un script</a> para mostrar una página web estática. Si revisan el código del archivo <code>generate_static_page.py</code>, veran que es un archivo de Python, donde usamos <code>print</code> para "imprimir" la página que queremos mostrar. No olviden revisar los permisos de sus archivos al clonar el repo: los scripts deben ser ejecutables.</li>
+				<li>Usualmente ocupamos scripts cuando queremos pedirle al usuario que <a href="show_form.html">ingrese datos</a>. Para esto usamos formularios, que pueden tener distintos tipos de campos (texto, lista, alternativas, opciones, etc.). Para lograr esto, tenemos dos archivos: <code>show_form.html</code>, que muestra un formulario simple, y <code>cgi-bin/process_form.py</code>, que recibe los datos del formulario y los muestra en una página. Si revisan <code>show_form.html</code>, verán que el formulario de esta página apunta al script <code>cgi-bin/process_form.py</code>, de esta forma el servidor web sabe a donde mandar los datos del cliente.</li>
+				<li>Y si queremos mandar mas tipos de datos? Hay muchos tipos de &lt;input&gt;, pueden <a href="show_longer_form.html">ver algunos ejemplos aquí</a> y la <a href="https://www.w3schools.com/html/html_form_input_types.asp">lista completa de tags acá</a>. En este caso, el script hace dos cosas: 1) mostrarle una página al usuario, y 2) guardar los datos en el servidor. Por ahora use un archivo de texto plano, pero usualmente harán uso de alguna BD para hacer esto. <br>
+
+Eso si, ahora se habrán dado cuenta de que <code>GET</code> no es adecuado para enviar datos entre páginas, porque los valores del formulario se envían en texto plano. Más aún, si modifican los valores que se muestran en la URL y presionan enter, verán que los nuevos valores se guardan en el archivo &#9785;. <br>
+
+Ah! Ojo que en este ejemplo, el archivo de texto quedo en el mismo directorio que las paginas. ESTO ES UNA PÉSIMA PRACTICA, porque el archivo debe tener permisos de escritura para todo el mundo. <strong>Nunca, nunca hagan esto en la practica!</strong> Solo lo hice en este ejemplo porque todo queda en un servidor web local. Hacer esto en un servidor real = puerta abierta para hackers.
+
+ </li>
+				<li>En general usamos <code>POST</code> para enviar datos. <a href="show_longer_form_post.html">Aquí pueden ver un ejemplo</a>: es el mismo formulario que en el punto anterior, solo cambie el valor de <code>method</code>, así que los datos se guardan en el mismo archivo que el formulario anterior. Ahora los valores del formulario se envían en un mensaje distinto al request, así que ya no pueden modificar la URL para ingresar datos saltándonos el formulario.</li>
+
+				<li>Finalmente, podemos <a href="http://localhost:8000/cgi-bin/show_data.py">visualizar los datos recolectados</a> usando los formularios de los puntos 3 y 4. 
+			</ol>
+		</p>
+		<br><br>
+		<p>
+			Aprovechando que el servidor web corre en el terminal, podemos ver el "log" de los requests que recibe:<br>
+
+<code>
+.... <br>
+127.0.0.1 - - [20/Mar/2019 18:04:49] "GET /cgi-bin/save_data.py?nombre=wsww&edad=22&leng1=C&temblores=si&dias=Ma HTTP/1.1" 200 -<br>
+127.0.0.1 - - [20/Mar/2019 18:05:32] "GET /cgi-bin/save_data.py?nombre=wsww&edad=22&leng1=C&temblores=si&dias=Ma HTTP/1.1" 200 -<br>
+127.0.0.1 - - [20/Mar/2019 18:15:57] "GET /list_examples.html HTTP/1.1" 200 -<br>
+127.0.0.1 - - [20/Mar/2019 18:16:00] "GET /show_longer_form_post.html HTTP/1.1" 200 -<br>
+127.0.0.1 - - [20/Mar/2019 18:16:09] "POST /cgi-bin/save_data.py HTTP/1.1" 200 -<br>
+127.0.0.1 - - [20/Mar/2019 18:16:41] "POST /cgi-bin/save_data.py HTTP/1.1" 200 -<br>
+127.0.0.1 - - [20/Mar/2019 18:17:07] "POST /cgi-bin/save_data.py HTTP/1.1" 200 -<br>
+127.0.0.1 - - [20/Mar/2019 18:21:13] code 404, message File not found<br>
+127.0.0.1 - - [20/Mar/2019 18:21:13] "GET /página_que_no_existe.html HTTP/1.1" 404 -<br>
+.... <br>
+
+</code>
+<br>
+			Cada línea representa un request, y el código numérico al final de la línea indica el estado del request. El código 200 indica que el servidor pudo procesar en forma correcta el request, mientras que el 404 indica que el cliente pidió un recurso que no existe. Estos códigos nos ayudan a corregir errores de configuración y de programación en la web, es importante conocer los más típicos. Pueden encontrar una <a href="https://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html">lista de estos códigos aquí</a>.
+
+		</p>
+	</body>
+</html>
