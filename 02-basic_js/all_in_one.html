@@ -1,0 +1,24 @@
+<html>
+	<head>
+		<title>Cambiar un elemento de la pagina</title>
+		<meta charset="utf-8">
+	</head>
+
+	<body>
+		<h1>Procesando eventos de tipo "onclick"</h1>
+
+		<p id="demo"></p>
+
+		<p>En esta pagina, incluí un bloque de JavaScript hacia el final de la pagina, esto es lo que se encuentra dentro del tag <code>&lt;script&gt;</code> cuando ven el código fuente de la pagina. Dentro de este bloque definí una función llamada <code>processButtonClick()</code>. Lo único que hace esta función es buscar un elemento de la pagina Web por identificador, en este caso, el elemento con identificador "demo". Este elemento corresponde a un párrafo <code>&lt;p&gt;</code>, así que tiene un atributo llamado <code>innerHTML</code>. Al modificar el valor de ese atributo, cambiamos la pagina sin volver a cargar la pagina.</p><br>
+		<p>Eso explica el código JavaScript que se encuentra en esta pagina. Falta definir cuando se ejecutara la función <code>processButtonClick()</code>. Una forma es asociando la función a un evento JavaScript de tipo "onclick", que se gatilla cuando el usuario hace click en algún elemento de la pagina web. En este ejemplo, asocie el evento a un botón, indicando el valor del atributo <code>onclick</code>.
+		</p>
+
+		<button onclick="processButtonClick()">Presioname!</button>
+
+		<script>
+			function processButtonClick() {
+				document.getElementById("demo").innerHTML = "Hola hola! Agregamos este texto en respuesta a un onclick.";
+			}
+		</script>
+	</body>
+</html>

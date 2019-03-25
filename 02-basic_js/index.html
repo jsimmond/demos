@@ -1,0 +1,19 @@
+<html>
+	<head>
+		<title>Intro a JavaScript</title>
+		<meta charset="utf-8">
+	</head>
+
+	<body>
+		<p>En en esta demo, mostrare como podemos usar JavaScript para modificar el contenido de una pagina, como también para validar los datos de un formulario antes de que los datos sean enviados al servidor. JavaScript es un lenguaje orientado a objetos basado en prototipos, lo que significa que en vez de crear objeto usando un constructor, como lo hacen usualmente en Java, pueden modificar el prototipo de un objeto para crear objetos nuevos. </p><br>
+		<p>Como funciona esto? Cuando se carga un archivo .html en un navegador, queda disponible un objeto llamado <code>document</code>. Podemos usar funciones como <code>getElementById()</code> y <code>querySelector()</code> para encontrar los elementos que queremos modificar (como una tabla, un titulo, un formulario, etc.) y después modificar sus valores para actualizar la pagina. <a href="https://www.w3schools.com/jsref/dom_obj_document.asp">Esta pagina</a> es una referencia completa a los métodos y atributos del objeto <code>document</code>. </p><br>
+		<p>La ventaja de usar JavaScript es que podemos alterar el contenido de una pagina sin navegar hacia otra pagina. </p><br>
+		<p>
+			Ejemplos:
+			<ol>
+				<li>En <a href="all_in_one.html">este ejemplo</a> pueden ver como use <code>getElementById()</code> para agregar texto a un párrafo cuando el usuario presiona un botón. Ojo que en este ejemplo, he incluido el código JavaScript en la misma pagina. Usualmente guardamos el código JavaScript en archivos separados, así podemos reusar las funciones que definimos en un archivo en varias paginas. </li>
+				<li>En <a href="modify_list.html">el segundo ejemplo</a> pueden ver como use una caja de texto para actualizar una lista que se encuentra en la pagina. De nuevo use el "onclick" de un botón para gatillar la función JavaScript, pero ahora creo nuevos elementos y los agrego a <code>document</code> para poder actualizar la pagina. Ah, y use <code>querySelector()</code> en vez de <code>getElementById()</code>.
+			</ol>
+		</p>
+	</body>
+</html>

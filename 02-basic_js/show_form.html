@@ -1,0 +1,27 @@
+<html>
+	<head>
+		<title>My little form ... con validación</title>
+		<meta charset="utf-8">
+	</head>
+
+	<body>
+		<p>El formulario de esta pagina apunta a un script cgi simple, así que deben acordarse de levantar un servidor CGIHTTPServer en el terminal y verificar que los permisos estén correctamente seteados antes de presionar el botón. </p>
+		<form name="simpleForm" action="http://localhost:8000/cgi-bin/process_data.py" method="post" onsubmit="return validateForm()">
+			Nombre &nbsp;&nbsp;&nbsp;
+			<input type="text" name="nombre"/>
+			<input type="submit" value="Enviar!">
+		</form>
+
+
+		<script>
+function validateForm() {
+	var name = document.forms["simpleForm"]["nombre"].value;
+	if (name == "") {
+		alert("Debes ingresar un nombre!");
+		return false;
+  }
+} 
+		</script>
+
+	</body>
+</html>

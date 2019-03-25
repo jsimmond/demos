@@ -1,0 +1,38 @@
+<html>
+	<head>
+		<title>Agregar elementos a una lista</title>
+		<meta charset="utf-8">
+	</head>
+
+	<body>
+		<h1>Procesando eventos de tipo "onclick" (v2)</h1>
+
+		<p>En esta pagina tambien definimos una funcion JavaScript: <code>addItemToMyList()</code>. Tambien se gatilla al presionar el boton, pero ahora tomamos el valor que el usuario ingresa a la caja de texto y lo agregamos a la siguiente lista:
+			<ul id="inventario">
+				<li>arroz</li>
+				<li>tallarines</li>
+			</ul>
+		</p><br>
+
+		<p>Usen el siguiente textbox para agregar items a nuestro inventario:
+
+			<input type="text" name="item">
+			<button onclick="addItemToMyList()">Click me</button>
+		<p>
+
+		<script>
+function addItemToMyList() {
+	// Create a <li> node
+	var node = document.createElement("li");
+	// Create a text node using the value entered by the user
+	var textnode = document.createTextNode(document.querySelector("input[name='item']").value);
+	// Append the text to <li>
+	node.appendChild(textnode);                              
+	// Update document, appending <li> to <ul> with id="inventario" 
+	document.getElementById("inventario").appendChild(node);     
+}
+
+		</script>
+
+	</body>
+</html>
