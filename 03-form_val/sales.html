@@ -5,11 +5,13 @@
 	</head>
 
 	<body>
-		<form id="venta" name="simpleForm" action="http://localhost:8000/cgi-bin/make_sale.py" method="post" reset>
+		<form name="simpleForm" action="http://localhost:8000/cgi-bin/make_sale.py" method="post">
 			<fieldset>
 				<legend>Datos del cliente:</legend>
-				Nombre: <input type="text" id="nombre"><br>
-				Telefono: <input type="text" id="correo"><br>
+				Nombre: <input type="text" id="clientName" name="clientName" onblur="checkClientName()">
+					<p id="errorAlpha" style="color: red; visibility:hidden">Solo puede usar letras en el nombre</p>
+					<p id="errorShort" style="color: red; visibility:hidden">Nombre demasiado corto</p><br>
+				Telefono: <input type="text" id="email"><br>
 			</fieldset>
 			<fieldset>
 				<legend>Datos de la compra:</legend>
@@ -17,7 +19,9 @@
 					<tr id="item0"><td><input type="text" name="name0"></td>
 						<td><input type="text" name="cant0" id="cant0" onblur="updateTot(0)"></td>
 						<td><input type="text" name="prec0" id="prec0" onblur="updateTot(0)"></td>
-						<td><input type="text" id="sub0" disabled></td></tr>
+						<td><input type="text" name="sub0" id="sub0" readonly></td>
+						<!--<td><input type="text" name="sub0" id="sub0" disabled></td>-->
+					</tr>
 				</table>
 			<input type="reset" value="Limpiar formulario"/>
 			<button onclick="addRow();return false;">Agregar item</button>
@@ -49,6 +53,21 @@ function updateTot(val){
 	sub.value = mult;
 	total.value = +total.value + mult;	
 }
+
+function checkClientName(){
+	let text = document.forms[0]["clientName"].value
+//	console.log(text);
+	if (text != "" && !text.match(/^[a-z]+$/i))
+		errorAlpha.style.visibility = "visible";
+	else
+		errorAlpha.style.visibility = "hidden";
+
+	if (text.length <= 3)
+		errorShort.style.visibility = "visible";
+	else
+		errorShort.style.visibility = "hidden";
+}
+
 
 	</script>
  

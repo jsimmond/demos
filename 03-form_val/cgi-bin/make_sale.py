@@ -3,7 +3,8 @@ import cgi
 
 form = cgi.FieldStorage()
 
-test = form.getvalue('name1')
+test = form.getvalue('clientName')
+test2 = form.getvalue('sub0')
 
 print("Content-Type: text/html\n\n")
 print("")
@@ -17,6 +18,7 @@ print '''<html>
 <h1>Hola '''
 
 print test
+print test2
 
 print '''</h1>
 </body>
