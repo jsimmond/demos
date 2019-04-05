@@ -1,0 +1,161 @@
+<html>
+	<head>
+		<title>Intro a Django</title>
+		<meta charset="utf-8">
+	</head>
+
+	<body>
+		<h1>Intro a Django</h1>
+		<p>Django es un framework que permite desarrollar aplicaciones web de manera fácil. Seguiremos escribiendo scripts para manejar los datos que usuarios nos envían por formularios, aun tendremos que diseñar nuestros formularios, etc. La gracia de usar un framework como Django es ya no tendremos que construir desde cero algunas cosas que son comunes a aplicaciones web, como el manejo de usuario, el manejo de conexiones a una BD, manejo de errores, etc. </p>
+
+		<p>Django sigue un patrón de arquitectura llamado <em>Model-View-Template</em> (MVT). Esto significa que el framework maneja todo a través de tres componentes:
+			<ul>
+				<li>Model: el modelo contiene los objetos que crearan, modificaran y borraran durante el uso de la aplicación. Por ejemplo, si quieren guardar una rubrica, deben crear un objeto que represente una rubrica en el modelo. La gracia principal del modelo de Django es que nosotros solo debemos especificar los objetos que queremos usar, definiendolos como clases de Python. Django se encarga de generar las sentencias SQL necesarias para guardar los objetos en una BD, como también de generar métodos para acceder a colecciones de objetos guardados en la BD y sus atributos.</li>
+				<li>View: los Views son los encargados de procesar los requests de los usuarios, se escriben como funciones de Python. Estas funciones deben retornar un response, o sea, una respuesta al usuario. En esta demo solo haremos un HttpResponse, que recibe como argumento un string con el código HTML de la pagina a mostrar. En demos futuras, usaremos Templates en vez de HttpResponse. </li>
+				<li>Template: un Template es un trozo de código HTML, donde se usan keywords para incluir código que sera usado para generar la pagina en forma dinámica. Por ejemplo, si tenemos una lista de objetos, podemos escribir un template que itera sobre la lista y muestra los datos de los objetos en una tabla. Veremos como usar templates en la próxima demo. </li>
+			</ul>
+				Entonces, cuando cargamos una URL en el browser, lo que hace Django es revisar que View debe ejecutar para poder darle una respuesta al usuario. El View puede consultar o modificar los objetos que ya existen en el Model, o puede crear nuevos objetos y/o relaciones entre objetos. Finalmente, la respuesta se le muestra al usuario <em>render</em>eando un Template. Esto solo significa que se interpreta el código del Template, reemplazando las variables por sus valores, iterando sobre los <tt>for</tt>, etc. 
+		</p>
+		<h1>La estructura básica de un proyecto</h1>
+		<p>Ahora veamos la estructura básica de un proyecto Django:<br>
+			<img src="structure.png" alt="Estructura de directorios de un proyecto Django"/><br>
+			En este ejemplo, cree un proyecto llamado <tt>simple</tt>, y este a la vez tiene 3 aplicaciones: <tt>firstapp</tt>, <tt>secondapp</tt> y <tt>simple</tt>. Ojo que la aplicación <tt>simple</tt> se creo en forma automática al crear el proyecto. Esta es la aplicación de entrada al proyecto, aquí configuraremos cosas como el mapeo entre URLs y views, donde esta la BD, que objetos del modelo se pueden ver en la consola de administración, etc. Al mismo nivel que las carpetas de las aplicaciones hay un archivo llamado <tt>manage.py</tt>, que usaremos para crear aplicaciones, aplicar cambios al modelo, etc. 
+		</p><br>
+		<p>La siguiente imagen muestra las diferencias entre la aplicación <tt>simple</tt> y una creada de forma manual:<br>
+			<img src="structure2.png" alt="Estructura de directorios de aplicaciones en un proyecto Django"/><br>
+			Aquí pueden ver que <tt>simple</tt> tiene los archivos <tt>settings.py</tt> y <tt>urls.py</tt>, mientras que <tt>firstapp</tt> tiene los archivos <tt>admin.py</tt>, <tt>models.py</tt> y <tt>views.py</tt>. Estos son los archivos que modificaremos en esta demo. Cada archivo tiene un propósito especifico.</p><br> 
+	<p>En el caso de <tt>simple</tt>:
+			<ul>	
+				<li><tt>settings.py</tt>: configuración general del proyecto, como donde esta la BD, y que aplicaciones están instaladas. </li>
+				<li><tt>urls.py</tt>: configuración del mapeo entre URLs y Views del proyecto. </li>
+			</ul>
+En el caso de <tt>firstapp</tt>:
+			<ul>	
+				<li><tt>admin.py</tt>: configuración de cuales objetos del modelo (de esta aplicación) aparecen en la consola de admin del proyecto. </li>
+				<li><tt>models.py</tt>: aquí se definen los objetos de la aplicación, como clases de Python. </li>
+				<li><tt>views.py</tt>: aquí se escriben los views de la aplicación (el código que se ejecuta al cargar una URL), como funciones de Python. </li>
+			</ul>
+		</p>
+		<h1>Primeros pasos</h1>
+			
+		<p>
+			Esta demo asume que ya instalaron alguna versión de Django para Python 3.x. Como Django genera varios archivos Python, tengan cuidado de usar el mismo tipo de tabulación que ya hay en los archivos, para evitar problemas de sintaxis. 
+			<ol>
+				<li>Primero deben crear el proyecto, ejecutando el siguiente comando (ustedes deben elegir el <tt>nombre_proyecto</tt>):
+<pre><code>django-admin startproject nombre_proyecto</code></pre>
+					Esto crea una carpeta como la de la primera imagen de esta pagina. </li>
+				<li>Una vez creado el proyecto, deben entrar a la carpeta del proyecto y levantar un servidor local para el desarrollo. Esto es equivalente a lo que hacíamos con CGIHTTPServer en las demos anteriores:
+<pre><code>cd nombre_proyecto
+python manage.py runserver puerto</code></pre>
+					Pueden indicar el valor del puerto en que quieren correr el servidor</li>
+				<li>Ahora pueden crear su primera aplicación dentro del proyecto. Como usaremos <tt>manage.py</tt>, deben ejecutar este comando en la carpeta raíz del proyecto:
+<pre><code>python manage.py startapp nombre_app</code></pre> </li>
+				<li>Deben registrar la nueva aplicación en los <tt>settings.py</tt> del proyecto. Busquen la tupla <tt>INSTALLED_APPS</tt>, agreguen el nombre de su app al final:
+<pre><code>INSTALLED_APPS = (
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+    'nombre_app',
+)
+</code></pre></li>
+				<li>Ahora podemos crear un View dentro de nuestra app. Escribiremos una función que solo retorna un <tt>HttpResponse</tt> simple. Agreguen las siguientes lineas a <tt>views.py</tt> de su aplicación:
+<pre><code>
+from django.http import HttpResponse
+...
+def hello_world(request):
+        text = "&lt;h1>EXITOOO&lt;/h1>"
+        return HttpResponse(text)
+</code></pre></li>
+				<li>Para poder ejecutar este View, debemos agregar un patrón de URL a las <tt>urls.py</tt> del proyecto. 
+<pre><code>
+from nombre_app import views as nombre_views
+...
+
+urlpatterns = [
+    url(r'^admin/', admin.site.urls),
+    url(r'^hi/', nombre_views.hello_world, name='hi'),
+]
+</code></pre>
+La primera linea crea un namespace para los views asociados a la aplicación donde agregamos el View. Esto es para poder organizar las URLs por aplicación, dado que un proyecto usualmente consiste de varias aplicaciones (módulos lógicos). En <tt>urlpatterns</tt> deben ir agregando reglas para asociar URLs a las views de su proyecto. En este ejemplo, la ultima linea que comienza con <tt>url(...</tt> es el patrón que agregue, donde la URL <tt>localhost/hi</tt> quedara mapeada al View que definimos en el paso anterior. La función <tt>url</tt> recibe dos parámetros obligatorios: una expresión que indica la URL (o las URLs) asociadas a la regla, y la View asociada. Pueden ignorar el parámetro <tt>name</tt> por ahora. </li>
+				<li>Si llegaron hasta acá, deberían poder cargar la URL <tt>http://localhost/hi</tt>. No olviden colocar el puerto si especificaron uno al levantar el servidor. </li> 
+
+			</ol>
+		</p>
+		<h1>Creando modelos</h1>
+		<p>Las aplicaciones Django tienen modelos, cada modelo representa un objeto dentro de la aplicación. Algunos objetos van a representar objetos de la vida real, como alumnos, rubricas, etc., pero otros objetos son sintéticos, los irán diseñando a medida que construyen su aplicación. 
+			<ol>
+				<li>Los modelos se definen como clases dentro de la aplicación donde serán gestionadas. Por ejemplo, para crear un modelo que representa un animal de granja en <tt>nombre_app</tt>, deben agregar las siguientes lineas al archivo <tt>models.py</tt> que se encuentra dentro de la carpeta de la aplicación:
+<pre><code>
+class FarmAnimal(models.Model):
+        animal_name = models.CharField(max_length = 15)
+        nbr_legs = models.IntegerField(default=4)
+
+        def __str__(self):
+                return self.animal_name
+</code></pre>
+También definí la función <tt>__str__</tt>, para facilitar el desarrollo. </li>
+				<li>Cada vez que hacen un cambio en un modelo de una aplicación, deben agregar estos cambios al proyecto. Para hacer esto, primero deben crear una <em>migración</em> dentro del proyecto:
+<pre><code>
+python manage.py makemigrations nombre_app
+</code></pre>
+En <tt>nombre_app</tt> colocan el nombre de la aplicación donde hicieron los cambios de modelo.</li>
+				<li>Una vez creada la migración, deben ejecutarla:
+<pre><code>
+python manage.py migrate
+</code></pre></li>
+				<li>Todavía no tenemos un formulario para poder agregar objetos a la BD. Pero para hacer pruebas, podemos usar la consola de administración o el shell para crear objetos. Aquí lo haré desde el shell:
+<pre><code>
+python manage.py shell
+</code></pre>Esto abre un terminal de Python, asociado al proyecto.</li>
+				<li>Ahora podemos ejecutar las siguientes instrucciones:
+<pre><code>
+>> # importar la definicion de FarmAnimal
+>> from nombre_app.models import FarmAnimal   
+>>
+>> # retorna un QuerySet con los objetos que encontro en la BD .. inicialmente vacia
+>> FarmAnimal.objects.all()						
+>>
+>> # creamos un objeto ...
+>> f = FarmAnimal(animal_name="cow", nbr_legs=4)
+>>
+>> # ... y lo guardamos en la BD
+>> f.save()
+>>
+>> # el QuerySet ahora tiene un objeto
+>> FarmAnimal.objects.all()				
+>>		
+>> f2 = FarmAnimal(animal_name="lamb", nbr_legs=4)
+>> f2.save()
+>> f3 = FarmAnimal(animal_name="hen", nbr_legs=2)
+>> f3.save()
+</code></pre>Ahora tenemos tres animales en nuestra granja :-)</li>
+				<li>Ahora pueden crear un View que pide la lista de FarmAnimals que hay en la BD, y entrega sus nombres separados por comas. Deben editar <tt>views.py</tt> en <tt>nombre_app</tt>:
+<pre><code>
+from .models import FarmAnimal
+...
+def hello_world(request):
+...
+def bye_world(request):
+        farmAnimals = FarmAnimal.objects.all()
+        text = ', '.join([f.animal_name for f in farmAnimals])
+        return HttpResponse(text)
+</code></pre></li>
+				<li>No olviden el ultimo paso: crear un patrón de URL en el proyecto y asociarlo al View. Deben editar <tt>urls.py</tt>:
+<pre><code>
+from nombre_app import views as nombre_views
+...
+
+urlpatterns = [
+    url(r'^admin/', admin.site.urls),
+    url(r'^hi/', nombre_views.hello_world, name='hi'),
+    url(r'^bye/', nombre_views.bye_world, name='bye'),
+]
+</code></pre></li>
+				<li>Si llegaron hasta acá, deberían poder cargar la URL <tt>http://localhost/bye</tt>. No olviden colocar el puerto si especificaron uno al levantar el servidor. </li> 
+ 			</ol>
+		</p>
+	</body>
+</html>
