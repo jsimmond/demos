@@ -39,24 +39,26 @@ function addRow(){
 //	console.clear();
 	++n;
 	let newRow = '<tr id="item' + n + '"><td><input type="text" name="name' + n + '"></td><td><input type="text" name="cant' + n +'" id="cant' + n +'" onblur="updateTot('+ n +')"></td><td><input type="text" name="prec' + n + '" id="prec' + n + '" onblur="updateTot(' + n +')"></td><td><input type="text" id="sub' + n + '" disabled></td></tr>';
-//	console.log(newRow);
+	console.log(newRow);
 	table.insertAdjacentHTML('beforeend', newRow);
 }
 
 function updateTot(val){
-//	console.log(val);
+	console.log("en funcion updateTot");
+	console.log("fila a actualizar: " + val);
 	let cant = document.getElementById(`cant${val}`);
 	let prec = document.getElementById(`prec${val}`);
 	let mult = +cant.value * +prec.value;
-//	console.log(mult);
+	console.log(mult);
 	let sub = document.getElementById(`sub${val}`);
 	sub.value = mult;
 	total.value = +total.value + mult;	
 }
 
 function checkClientName(){
+	console.log("en funcion checkClientName");
 	let text = document.forms[0]["clientName"].value
-//	console.log(text);
+	console.log("nombre de cliente: " + text);
 	if (text != "" && !text.match(/^[a-z]+$/i))
 		errorAlpha.style.visibility = "visible";
 	else
