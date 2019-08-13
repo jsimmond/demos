@@ -2,3 +2,11 @@ e33	34	OFF	OFF	OFF	no	Ma
 ffrrf	2	OFF	OFF	OFF	si	Lu
 deew	22	OFF	OFF	OFF	si	Ma
 feref	22	OFF	ON	OFF	si	Lu
+hehh	654353	OFF	ON	OFF	si	Ma
+hehh	-3	OFF	ON	OFF	si	NUNCA
+hgdg	992938	OFF	ON	OFF	no	Vi
+jjhdhd	23	OFF	ON	ON	no	Vi
+jjhdhd	23	OFF	ON	ON	no	Vi
+dsfdsfdsf	343	ON	OFF	OFF	si	Ma
+dsfdsfdsf	343	ON	OFF	OFF	si	Ma
+holiholi	343	ON	OFF	OFF	si	Ma
