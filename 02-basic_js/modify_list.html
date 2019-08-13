@@ -25,7 +25,8 @@ function addItemToMyList() {
 	// Create a <li> node
 	var node = document.createElement("li");
 	// Create a text node using the value entered by the user
-	var textnode = document.createTextNode(document.querySelector("input[name='item']").value);
+	var textnode = document.createTextNode(document.querySelector("input[name='item']").
+value);
 	// Append the text to <li>
 	node.appendChild(textnode);                              
 	// Update document, appending <li> to <ul> with id="inventario" 
